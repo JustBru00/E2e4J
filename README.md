@@ -7,7 +7,7 @@ This library is not based around any official Emerson API documentation.
 ### Library usage examples:
 The main class you will be dealing with is the `E2e` class. 
 ```Java
-	E2e e2e = new E2e("192.168.0.26");
+E2e e2e = new E2e("192.168.0.26");
 ```
 
 This will create a new instance of the `E2e` class that is ready to connect to a E2e controller at 192.168.0.26:14106.
@@ -15,30 +15,30 @@ The constructor of the `E2e` class is blocking because we need to contact the E2
 This controller name is important when constructing data pointers for the E2e.
 If the E2e you are connecting to uses a different "FSD Client Port", you can set a custom port using the following code:
 ```Java
-	E2e e2e = new E2e("192.168.0.26", "CUSTOM_PORT_NUMBER_HERE");
+E2e e2e = new E2e("192.168.0.26", "CUSTOM_PORT_NUMBER_HERE");
 ```
 
 Next, lets get the current status of the `CONTROL TEMP` value on two different standard circuit applications.
 In this example the two standard circuit applications are named `1 S FRZR EVAP` and `2 N FRZR EVAP`.
 ```Java
-	ArrayList<String> pointers = new ArrayList<String>();
-	pointers.add("1 S FRZR EVAP:CONTROL TEMP");
-	pointers.add("2 N FRZR EVAP:CONTROL TEMP");
+ArrayList<String> pointers = new ArrayList<String>();
+pointers.add("1 S FRZR EVAP:CONTROL TEMP");
+pointers.add("2 N FRZR EVAP:CONTROL TEMP");
 		
-	try {
-		Optional<MultiExpandedStatus> multiExpanded = e2e.getMultiExpandedStatus(pointers);
-		
-		if (multiExpanded.isPresent()) {
-			for (ExpandedStatus es : multiExpanded.get().getExpandedStatuses()) {
-				System.out.println(es.toString());
-			}
-		} else {
-			System.out.println("Optional was empty.");
-		}				
-	} catch (UnirestException e) {
-		e.printStackTrace();
-		System.out.println("Exception occured while attempting to get the multi expanded status.");
-	}
+try {
+	Optional<MultiExpandedStatus> multiExpanded = e2e.getMultiExpandedStatus(pointers);
+	
+	if (multiExpanded.isPresent()) {
+		for (ExpandedStatus es : multiExpanded.get().getExpandedStatuses()) {
+			System.out.println(es.toString());
+		}
+	} else {
+		System.out.println("Optional was empty.");
+	}				
+} catch (UnirestException e) {
+	e.printStackTrace();
+	System.out.println("Exception occured while attempting to get the multi expanded status.");
+}
 ```
 
 The `ExpandedStatus` class stores the information returned by the E2e. I have an example output of the data returnedd below:
