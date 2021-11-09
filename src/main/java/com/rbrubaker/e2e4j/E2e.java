@@ -131,7 +131,7 @@ public class E2e {
 				System.out.println("ERROR: Response Body: " + response.getBody());
 				return Optional.empty();
 			}
-			
+			System.out.println("E2e Response:" + response.getBody().toString());
 			try {
 				for (int i = 0; i < dataArray.length(); i++) {
 					ExpandedStatus expandedStatus = new ExpandedStatus();

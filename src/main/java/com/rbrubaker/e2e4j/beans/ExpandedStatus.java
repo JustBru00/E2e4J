@@ -48,6 +48,10 @@ public class ExpandedStatus {
 		return value;
 	}
 	
+	public double getValueAsDouble() throws NullPointerException, NumberFormatException {		
+		return Double.parseDouble(value);
+	}
+	
 	public void setValue(String value) {
 		this.value = value;
 	}
