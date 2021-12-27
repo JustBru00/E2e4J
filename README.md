@@ -4,6 +4,26 @@ Java library for connecting to Emerson Einstein 2 Enhanced controllers. (Abbrevi
 The goal of this library is to provide access to controller data by using the E2e's "FSD Client Port".
 This library is not based around any official Emerson API documentation.
 
+### Maven Details
+Repository:
+```
+	<repositories>
+		<repository>
+			<id>jitpack.io</id>
+			<url>https://jitpack.io</url>
+		</repository>
+	</repositories>
+```
+
+Dependency:
+```
+	<dependency>
+		<groupId>com.github.JustBru00</groupId>
+		<artifactId>E2e4J</artifactId>
+		<version>3924936</version> <!-- There is no published version yet. Using commit 3924936 instead. -->
+	</dependency>
+```
+
 ### Library usage examples:
 The main class you will be dealing with is the `E2e` class. 
 ```Java
