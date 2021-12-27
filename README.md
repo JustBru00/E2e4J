@@ -20,7 +20,7 @@ Dependency:
 <dependency>
 	<groupId>com.github.JustBru00</groupId>
 	<artifactId>E2e4J</artifactId>
-	<version>3924936</version> <!-- There is no published version yet. Using commit 3924936 instead. -->
+	<version>master-SNAPSHOT</version> <!-- There is no published version yet. Using commit master-SNAPSHOT instead. -->
 </dependency>
 ```
 
