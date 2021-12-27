@@ -6,22 +6,22 @@ This library is not based around any official Emerson API documentation.
 
 ### Maven Details
 Repository:
-```
-	<repositories>
-		<repository>
-			<id>jitpack.io</id>
-			<url>https://jitpack.io</url>
-		</repository>
-	</repositories>
+```XML
+<repositories>
+	<repository>
+		<id>jitpack.io</id>
+		<url>https://jitpack.io</url>
+	</repository>
+</repositories>
 ```
 
 Dependency:
-```
-	<dependency>
-		<groupId>com.github.JustBru00</groupId>
-		<artifactId>E2e4J</artifactId>
-		<version>3924936</version> <!-- There is no published version yet. Using commit 3924936 instead. -->
-	</dependency>
+```XML
+<dependency>
+	<groupId>com.github.JustBru00</groupId>
+	<artifactId>E2e4J</artifactId>
+	<version>3924936</version> <!-- There is no published version yet. Using commit 3924936 instead. -->
+</dependency>
 ```
 
 ### Library usage examples:
