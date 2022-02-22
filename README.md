@@ -1,3 +1,5 @@
+[![](https://jitpack.io/v/JustBru00/E2e4J.svg)](https://jitpack.io/#JustBru00/E2e4J)
+
 # E2e4J 
 ### Author: Justin Brubaker
 Java library for connecting to Emerson Einstein 2 Enhanced controllers. (Abbreviation: E2e)
