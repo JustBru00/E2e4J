@@ -63,7 +63,7 @@ try {
 }
 ```
 
-The `ExpandedStatus` class stores the information returned by the E2e. I have an example output of the data returnedd below:
+The `ExpandedStatus` class stores the information returned by the E2e. I have an example output of the data returned below:
 ```
 ExpandedStatus [pointer=EINSTEIN:1 S FRZR EVAP:CONTROL TEMP, value=66.30, alarm=false, notice=false, fail=false, override=true, overrideTime=78:16:51, overrideType=0, engineeringUnits=DF, dataType=1, bypassTime=]
 ExpandedStatus [pointer=EINSTEIN:2 N FRZR EVAP:CONTROL TEMP, value=67.40, alarm=false, notice=false, fail=false, override=true, overrideTime=0:00:00, overrideType=0, engineeringUnits=DF, dataType=1, bypassTime=]
