@@ -5,8 +5,10 @@ import java.util.Optional;
 
 import com.rbrubaker.e2e4j.beans.Alarm;
 import com.rbrubaker.e2e4j.beans.AlarmList;
+import com.rbrubaker.e2e4j.beans.ConfigValue;
 import com.rbrubaker.e2e4j.beans.E2eControllerInformation;
 import com.rbrubaker.e2e4j.beans.ExpandedStatus;
+import com.rbrubaker.e2e4j.beans.MultiConfigValue;
 import com.rbrubaker.e2e4j.beans.MultiExpandedStatus;
 
 import kong.unirest.HttpResponse;
@@ -182,7 +184,7 @@ public class E2e {
 				resultObj = response.getBody().getObject().getJSONObject("result");
 				dataArray = resultObj.getJSONArray("data");
 			} catch (JSONException e) {
-				System.out.println("ERROR: E2e#getMultiExpandedStatus() - Response had no result object.");
+				System.out.println("ERROR: E2e#getAlarmList() - Response had no result object.");
 				System.out.println("ERROR: Response Body: " + response.getBody());
 				return Optional.empty();
 			}
@@ -218,10 +220,64 @@ public class E2e {
 				
 				return Optional.of(list);
 			} catch (JSONException e) {
-				System.out.println("ERROR: E2e#getMultiExpandedStatus() - Failed to parse response.");
+				System.out.println("ERROR: E2e#getAlarmList() - Failed to parse response.");
 				return Optional.empty();
 			}
 		}
+		return Optional.empty();
+	}
+	
+	/**
+	 * Method: E2.GetConfigValues
+	 * 
+	 * @param pointers A list of pointer strings without the controller name. Eg. CONDENSER:PRES CTRL STPT
+	 * @return An instance of {@link MultiConfigValue} with the current status of the given pointers.
+	 * @throws UniresetException
+	 */
+	public Optional<MultiConfigValue> getConfigValues(ArrayList<String> pointersWithoutControllerName) {
+		MultiConfigValue multiConfigValues = new MultiConfigValue();
+		StringBuilder jsonPointers = new StringBuilder();
+		
+		for (String pointer : pointersWithoutControllerName) {
+			jsonPointers.append("\"" + controllerName + ":" + pointer + "\", ");
+		}	
+		
+		String formattedPointer = jsonPointers.toString().substring(0, jsonPointers.toString().length() - 2);
+		
+		HttpResponse<JsonNode> response = Unirest.post(String.format("http://%s:%s/JSON-RPC?", ipAddress, portNumber))
+				.header("Content-Type", "text/plain")
+				.body(String.format("{\"id\":0,\"method\":\"E2.GetConfigValues\",\"params\":[[%s]]}", formattedPointer))
+				.asJson();
+				
+		if (response.getStatus() == 200) {
+			JSONObject resultObj;
+			JSONArray dataArray;
+			try {
+				resultObj = response.getBody().getObject().getJSONObject("result");
+				dataArray = resultObj.getJSONArray("data");
+			} catch (JSONException e) {
+				System.out.println("ERROR: E2e#getConfigValues() - Response had no result object.");
+				System.out.println("ERROR: Response Body: " + response.getBody());
+				return Optional.empty();
+			}
+			System.out.println("E2e Response:" + response.getBody().toString());
+			try {
+				for (int i = 0; i < dataArray.length(); i++) {
+					ConfigValue configValue = new ConfigValue();
+					JSONObject current = dataArray.getJSONObject(i);
+					configValue.setPointer(current.getString("prop"));
+					configValue.setValue(current.getString("value"));
+					configValue.setValueBin(current.getString("valueBin"));
+					multiConfigValues.addConfigValue(configValue);
+				}
+				
+				return Optional.of(multiConfigValues);
+			} catch (JSONException e) {
+				System.out.println("ERROR: E2e#getConfigValues() - Failed to parse response.");
+				return Optional.empty();
+			}			
+		}
+		
 		return Optional.empty();
 	}
 	
