@@ -33,7 +33,7 @@ import kong.unirest.json.JSONObject;
  * E2.GetAlarmList  X
  * E2.AlarmAction
  * E2.GetDeviceInfoForRoute
- * E2.GetConfigValues
+ * E2.GetConfigValues  X
  * E2.SetConfigValues
  * E2.GetAuxProps
  * E2.SetAuxProps
