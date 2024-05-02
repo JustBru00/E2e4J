@@ -76,7 +76,7 @@ This shows the most basic application of this library, retrieving the current te
 ### License
 ```
 E2e4J - A Java library for connecting with Emerson Einstein 2 Enhanced controllers.
-    Copyright (C) 2021 Rufus Brubaker Refrigeration
+    Copyright (C) 2024 Rufus Brubaker Refrigeration
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
