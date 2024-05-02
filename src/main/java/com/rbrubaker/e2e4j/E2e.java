@@ -3,6 +3,8 @@ package com.rbrubaker.e2e4j;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import com.rbrubaker.e2e4j.beans.Alarm;
+import com.rbrubaker.e2e4j.beans.AlarmList;
 import com.rbrubaker.e2e4j.beans.E2eControllerInformation;
 import com.rbrubaker.e2e4j.beans.ExpandedStatus;
 import com.rbrubaker.e2e4j.beans.MultiExpandedStatus;
@@ -26,7 +28,7 @@ import kong.unirest.json.JSONObject;
  * E2.GetMultiExpandedStatus  X
  * E2.GetExpandedInfo
  * E2.GetLogDataRaw
- * E2.GetAlarmList
+ * E2.GetAlarmList  X
  * E2.AlarmAction
  * E2.GetDeviceInfoForRoute
  * E2.GetConfigValues
@@ -43,7 +45,7 @@ import kong.unirest.json.JSONObject;
  * E2.GetControllerList  X
  * 
  * E2e4J - A Java library for connecting with Emerson Einstein 2 Enhanced controllers.
- *   Copyright (C) 2021 Rufus Brubaker Refrigeration
+ *   Copyright (C) 2024 Rufus Brubaker Refrigeration
  *
  *   This program is free software: you can redistribute it and/or modify
  *   it under the terms of the GNU General Public License as published by
@@ -156,6 +158,70 @@ public class E2e {
 			}			
 		}
 		
+		return Optional.empty();
+	}
+	
+	/**
+	 * Method: E2.GetAlarmList
+	 * 
+	 * 
+	 * @return An instance of {@link AlarmList} with the list of {@link Alarm}s.
+	 * @throws UniresetException
+	 */
+	public Optional<AlarmList> getAlarmList() {
+		HttpResponse<JsonNode> response = Unirest.post(String.format("http://%s:%s/JSON-RPC?", ipAddress, portNumber))
+				.header("Content-Type", "text/plain")
+				.body(String.format("{\"id\":0,\"method\":\"E2.GetAlarmList\",\"params\":[\"%s\", false]}", controllerName))
+				.asJson();
+				
+		if (response.getStatus() == 200) {			
+			JSONObject resultObj;
+			JSONArray dataArray;
+			
+			try {
+				resultObj = response.getBody().getObject().getJSONObject("result");
+				dataArray = resultObj.getJSONArray("data");
+			} catch (JSONException e) {
+				System.out.println("ERROR: E2e#getMultiExpandedStatus() - Response had no result object.");
+				System.out.println("ERROR: Response Body: " + response.getBody());
+				return Optional.empty();
+			}
+			
+			try {
+				AlarmList list = new AlarmList();
+				for (int i = 0; i < dataArray.length(); i++) {
+					Alarm alarm = new Alarm();
+					JSONObject current = dataArray.getJSONObject(i);
+					alarm.setAdvisoryId(current.getLong("advid"));
+					alarm.setAdvisoryCode(current.getInt("advcode"));
+					alarm.setTimestamp(current.getString("timestamp"));
+					alarm.setState(current.getString("state"));
+					alarm.setSource(current.getString("source"));
+					alarm.setText(current.getString("text"));
+					alarm.setAlarm(current.getBoolean("alarm"));
+					alarm.setNotice(current.getBoolean("notice"));
+					alarm.setFail(current.getBoolean("fail"));
+					alarm.setUnacknowledged(current.getBoolean("unacked"));
+					alarm.setAcknowledged(current.getBoolean("acked"));
+					alarm.setReset(current.getBoolean("reset"));
+					alarm.setReturnToNormal(current.getBoolean("rtn"));
+					alarm.setAcknowledgedUser(current.getString("ackuser"));
+					alarm.setAcknowledgedTimestamp(current.getString("acktimestamp"));
+					alarm.setPriority(current.getInt("priority"));
+					alarm.setReturnToNormalTimestamp(current.getString("rtntimestamp"));
+					alarm.setReportValue(current.getString("reportvalue"));
+					alarm.setLimitValue(current.getString("limit"));
+					alarm.setEngineeringUnits(current.getString("engUnits"));
+					
+					list.addAlarmToList(alarm);
+				}
+				
+				return Optional.of(list);
+			} catch (JSONException e) {
+				System.out.println("ERROR: E2e#getMultiExpandedStatus() - Failed to parse response.");
+				return Optional.empty();
+			}
+		}
 		return Optional.empty();
 	}
 	
