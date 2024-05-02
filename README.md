@@ -22,7 +22,7 @@ Dependency:
 <dependency>
 	<groupId>com.github.JustBru00</groupId>
 	<artifactId>E2e4J</artifactId>
-	<version>master-SNAPSHOT</version> <!-- There is no published version yet. Using commit master-SNAPSHOT instead. -->
+	<version>0.1.0</version> <!-- Use version "master-SNAPSHOT" for the latest snapshot. -->
 </dependency>
 ```
 
